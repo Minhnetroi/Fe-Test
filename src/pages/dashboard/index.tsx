@@ -5,8 +5,6 @@ import { Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Table, Uplo
 import { useForm } from "antd/es/form/Form";
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import uploadFile from "../../utils/upload";
-import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
 
@@ -53,7 +51,7 @@ function Dashboard() {
       title: "Action",
       dataIndex: "id",
       key: "id",
-      render: (id, all) => <>
+      render: (id: number, all: Student) => <>
         <Popconfirm
           title="Are you sure!!!"
           onConfirm={() => handleDelete(id)}
@@ -71,7 +69,7 @@ function Dashboard() {
       </>
     },
   ];
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     try {
       await api.delete(`studentManagement/${id}`);
       toast.success("Delete successfully!!!");
@@ -115,14 +113,17 @@ function Dashboard() {
     },
   };
 
-  const onfinish = async (values) => {
-    const dateFormatted = moment(values.dateofbirth.$d).format('YYYY-MM-DD');
-    values.dateofbirth = dateFormatted;
-    if (values?.id) {
-      await api.put(`studentManagement/${values.id}`, values);
+  const onfinish = async (values: Student) => {
+    const dateFormatted = moment(values.dateofbirth).format('YYYY-MM-DD');
+    const updatedValues: Student = {
+      ...values,
+      dateofbirth: dateFormatted,
+    };
+    if (updatedValues.id) {
+      await api.put(`studentManagement/${updatedValues.id}`, updatedValues);
       toast.success("Update successfully!!!");
     } else {
-      await api.post("studentManagement", values);
+      await api.post("studentManagement", updatedValues);
       toast.success("Add new student successfully!!!");
     }
 

@@ -1,6 +1,5 @@
-import { Card, Avatar } from 'antd';
+import { Card } from 'antd';
 import { Student } from '../../model/students';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
